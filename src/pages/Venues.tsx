@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/client";
 import { Button } from "@/components/ui/button";
@@ -33,28 +33,7 @@ const Venues = () => {
     fetchVenues();
   }, []);
 
-  useEffect(() => {
-    filterVenues();
-  }, [venues, searchTerm, capacityFilter]);
-
-  const fetchVenues = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("venues")
-        .select("*")
-        .order("rating", { ascending: false, nullsFirst: false });
-
-      if (error) throw error;
-      setVenues(data || []);
-    } catch (error) {
-      console.error("Error fetching venues:", error);
-      toast.error("Failed to load venues");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterVenues = () => {
+  const filterVenues = useCallback(() => {
     let filtered = venues;
 
     if (searchTerm) {
@@ -76,6 +55,27 @@ const Venues = () => {
     }
 
     setFilteredVenues(filtered);
+  }, [venues, searchTerm, capacityFilter]);
+
+  useEffect(() => {
+    filterVenues();
+  }, [filterVenues]);
+
+  const fetchVenues = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("venues")
+        .select("*")
+        .order("rating", { ascending: false, nullsFirst: false });
+
+      if (error) throw error;
+      setVenues(data || []);
+    } catch (error) {
+      console.error("Error fetching venues:", error);
+      toast.error("Failed to load venues");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
