@@ -65,4 +65,8 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
     return <>{children}</>;
 };
 
+<<<<<<< HEAD
 export default ProtectedRoute;
+=======
+export default ProtectedRoute;
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a

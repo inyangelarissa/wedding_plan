@@ -9,8 +9,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+<<<<<<< HEAD
 import { Users, TrendingUp, CheckCircle, XCircle, Building, Store, Calendar, MessageSquare, LogOut, Heart } from "lucide-react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
+=======
+import { Users, TrendingUp, CheckCircle, XCircle, Building, Store, Calendar, MessageSquare } from "lucide-react";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
 
 interface User {
   id: string;
@@ -70,6 +75,21 @@ export default function AdminDashboard() {
   });
   const [rejectionReason, setRejectionReason] = useState<{ [key: string]: string }>({});
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
   const fetchUsers = useCallback(async () => {
     const { data: profiles, error: profilesError } = await supabase
       .from("profiles")
@@ -185,6 +205,7 @@ export default function AdminDashboard() {
   }, [user, navigate, fetchAllData]);
 
   useEffect(() => {
+<<<<<<< HEAD
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
     });
@@ -197,6 +218,8 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
+=======
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
     if (user) {
       checkAdminStatus();
     }
@@ -284,6 +307,7 @@ export default function AdminDashboard() {
     );
   }
 
+<<<<<<< HEAD
   const handleLogout = async () => {
     await supabase.auth.signOut();
     toast.success("Logged out successfully");
@@ -308,6 +332,13 @@ export default function AdminDashboard() {
       <div className="container mx-auto p-8">
         <div className="mb-8">
           <h2 className="text-3xl font-serif font-bold mb-2">Admin Dashboard</h2>
+=======
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto p-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
           <p className="text-muted-foreground">Manage users, vendors, venues, and platform analytics</p>
         </div>
 

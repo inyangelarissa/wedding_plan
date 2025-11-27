@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/client";
 import { User } from "@supabase/supabase-js";
+=======
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/client";
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +31,7 @@ interface Activity {
   status?: string;
 }
 
+<<<<<<< HEAD
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -87,6 +94,31 @@ const Dashboard = () => {
 useEffect (() => {
     checkUser();
   }, [checkUser]);
+=======
+const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const { data: user, isLoading: isUserLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      return user;
+    },
+  });
+
+  const { data: userRole, isLoading: isRoleLoading } = useQuery({
+    queryKey: ["userRole", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user?.id)
+        .single();
+      return data?.role;
+    },
+  });
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
 
   // Fetch dashboard stats
   const { data: stats, isLoading: isStatsLoading } = useQuery<DashboardStats>({
@@ -205,6 +237,7 @@ useEffect (() => {
     navigate("/");
   };
 
+<<<<<<< HEAD
   const handleRoleSwitch = async (newRole: "couple" | "planner" | "vendor" | "venue_manager" | "admin") => {
     if (!user) return;
     
@@ -226,6 +259,9 @@ useEffect (() => {
   };
 
   if (loading) {
+=======
+  if (isUserLoading || isRoleLoading) {
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -236,7 +272,11 @@ useEffect (() => {
     );
   }
 
+<<<<<<< HEAD
   const getRoleName = (role: string | null) => {
+=======
+  const getRoleName = (role: string | undefined) => {
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
     if (!role) return "User";
     return role.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
   };
@@ -290,6 +330,7 @@ useEffect (() => {
           <h2 className="text-3xl font-serif font-bold mb-2">
             Welcome back, {user?.user_metadata?.full_name || "User"}!
           </h2>
+<<<<<<< HEAD
           <p className="text-muted-foreground mb-4">
             Role: <span className="font-medium text-foreground">{getRoleName(userRole)}</span>
           </p>
@@ -341,6 +382,11 @@ useEffect (() => {
               </Button>
             </CardContent>
           </Card>
+=======
+          <p className="text-muted-foreground">
+            Role: <span className="font-medium text-foreground">{getRoleName(userRole)}</span>
+          </p>
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -480,4 +526,8 @@ useEffect (() => {
   );
 };
 
+<<<<<<< HEAD
 export default Dashboard;
+=======
+export default Dashboard;
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a

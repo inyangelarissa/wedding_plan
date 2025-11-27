@@ -25,7 +25,11 @@ const getErrorMessage = (error: unknown): string => {
   return 'An unexpected error occurred';
 };
 
+<<<<<<< HEAD
 type UserRole = "couple" | "planner" | "vendor" | "venue_manager" | "administrator";
+=======
+type UserRole = "couple" | "planner" | "vendor" | "venue_manager";
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -47,15 +51,43 @@ const Auth = () => {
     setLoading(true);
 
     try {
+<<<<<<< HEAD
       const { error } = await supabase.auth.signInWithPassword({
+=======
+      const { data, error } = await supabase.auth.signInWithPassword({
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
         email: loginEmail,
         password: loginPassword,
       });
 
       if (error) throw error;
+<<<<<<< HEAD
  
       toast.success("Welcome back!");
       navigate("/dashboard");
+=======
+
+      toast.success("Welcome back!");
+
+      // Check user role and redirect accordingly
+      if (data.user) {
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .single();
+
+        if (roleData?.role === "vendor") {
+          navigate("/vendor-dashboard");
+        } else if (roleData?.role === "venue_manager") {
+          navigate("/venue-manager");
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        navigate("/dashboard");
+      }
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
     } catch (error: unknown) {
       toast.error(getErrorMessage(error) || "Failed to log in");
     } finally {
@@ -192,7 +224,10 @@ const Auth = () => {
                       <SelectItem value="planner">Event Planner</SelectItem>
                       <SelectItem value="vendor">Vendor</SelectItem>
                       <SelectItem value="venue_manager">Venue Manager</SelectItem>
+<<<<<<< HEAD
                       <SelectItem value="admin">Administrator</SelectItem>
+=======
+>>>>>>> 79ab52fcddbe5f54c17e8ebf3fd7e32c66add14a
                     </SelectContent>
                   </Select>
                 </div>
